@@ -19,10 +19,10 @@ jobs:
           terraform_version: 1.9.7  
 
       - name: Terraform Run Init
-        run: terraform init
+        run: terraform init 
 
       - name: Terraform Format
-        run: terraform fmt 
+        run: terraform fmt -check -recursive
 
       - name: Terraform Validate
         run: terraform validate
