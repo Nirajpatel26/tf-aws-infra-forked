@@ -1,7 +1,7 @@
 resource "aws_instance" "web_app_instance" {
-  ami           = var.ami           # Your custom AMI ID
+  ami           = var.ami
   instance_type = var.instance_type # Or any instance type suitable for your app
-
+  key_name      = var.key_pair_name
   # Attach the security group you created above
   vpc_security_group_ids = [aws_security_group.app_security_group.id]
 
@@ -15,8 +15,8 @@ resource "aws_instance" "web_app_instance" {
   # Disable accidental termination protection
   disable_api_termination = false
 
-  # Ensure the EC2 instance is created within the custom VPC and subnet
-  subnet_id = aws_subnet.public_subnet[0].id # Make sure this is a public subnet if you want to access it from the internet
+
+  subnet_id = aws_subnet.public_subnet[0].id
 }
 
 
@@ -33,4 +33,9 @@ variable "instance_type" {
 variable "volume_size" {
   description = "EBS volume size"
   type        = number
+}
+
+variable "key_pair_name" {
+  description = "SSH key for EC2"
+  type        = string
 }
