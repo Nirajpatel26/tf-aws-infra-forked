@@ -46,6 +46,36 @@ resource "aws_iam_role_policy_attachment" "custom_s3_policy_attachment" {
   role       = aws_iam_role.ec2_role.name
 }
 
+resource "aws_iam_policy" "custom_cloudwatch_policy" {
+  name        = "custom_cloudwatch_policy"
+  path        = "/"
+  description = "Custom CloudWatch policy for EC2 instances with limited permissions"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "cloudwatch:PutMetricData",
+          "cloudwatch:GetMetricStatistics",
+          "cloudwatch:ListMetrics",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogStreams"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "custom_cloudwatch_policy_attachment" {
+  policy_arn = aws_iam_policy.custom_cloudwatch_policy.arn
+  role       = aws_iam_role.ec2_role.name
+}
+
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "ec2_s3_profile"
   role = aws_iam_role.ec2_role.name

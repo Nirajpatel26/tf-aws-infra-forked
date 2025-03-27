@@ -36,6 +36,14 @@ resource "aws_instance" "web_app_instance" {
   echo "Environment variables:" > /tmp/debug_env.log
   cat /opt/csye6225/.env >> /tmp/debug_env.log
 
+  sudo touch /var/log/webapp.log
+  sudo chown csye6225:csye6225 /var/log/webapp.log
+  sudo chmod 644 /var/log/webapp.log
+
+  # Start CloudWatch agent
+  sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+  sudo amazon-cloudwatch-agent-ctl -a start
+  
   systemctl restart webapp.service
   EOF
   )
