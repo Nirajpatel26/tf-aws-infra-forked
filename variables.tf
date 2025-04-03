@@ -91,5 +91,67 @@ variable "db_password" {
   type        = string
 }
 
+variable "min_size_autosacling_group" {
+  description = "min isntances for web application"
+  type        = number
+  default     = 3
+}
 
+variable "max_size_autosacling_group" {
+  description = "max isntances for web application"
+  type        = number
+  default     = 5
+}
 
+variable "desired_capacity_autosacling_group" {
+  description = "max isntances for web application"
+  type        = number
+  default     = 3
+}
+
+variable "health_check_grace_period" {
+  description = "max isntances for web application"
+  type        = number
+  default     = 180
+}
+
+variable "no_of_instnaces_scaling_up" {
+  description = "no of isntances to scale up"
+  type        = number
+  default     = 1
+}
+
+variable "cooldown_period_of_an_instnaces" {
+  description = "cooldown_period_of_an_instnaces in sec"
+  type        = number
+  default     = 60
+}
+
+variable "no_of_instnaces_scaling_down" {
+  description = "no of isntances to scale up"
+  type        = number
+  default     = -1
+}
+
+variable "evaluation_periods" {
+  description = "evaluation periods"
+  type        = number
+  default     = 2
+}
+
+variable "high_threshold" {
+  description = "high threshold"
+  type        = number
+  default     = 5
+}
+
+variable "low_threshold" {
+  description = "low threshold"
+  type        = number
+  default     = 3
+}
+
+variable "domain_name" {
+  description = "domain_name"
+  type        = string
+}
