@@ -10,6 +10,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "bucket_lifecycle" {
     id     = "transition-to-ia"
     status = "Enabled"
 
+    filter {
+      prefix = "logs/"
+    }
+
     transition {
       days          = 30
       storage_class = "STANDARD_IA"
