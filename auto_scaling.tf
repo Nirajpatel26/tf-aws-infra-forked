@@ -1,6 +1,6 @@
 // app launch template
 resource "aws_launch_template" "app_launch_template" {
-  name_prefix   = "app-launch-template"
+  name          = "csye6225-asg-instance"
   image_id      = var.ami
   instance_type = var.instance_type
   key_name      = var.key_pair_name
@@ -14,18 +14,35 @@ resource "aws_launch_template" "app_launch_template" {
     name = aws_iam_instance_profile.ec2_profile.name
   }
 
+  block_device_mappings {
+    device_name = "/dev/xvda"
+
+    ebs {
+      delete_on_termination = true
+      volume_size           = 50
+      volume_type           = "gp2"
+      encrypted             = true
+      kms_key_id            = aws_kms_key.ec2_kms_key.arn
+    }
+  }
+
 
 
   user_data = base64encode(<<-EOF
   #!/bin/bash
+    sudo apt-get update -y
+    sudo snap install aws-cli --classic
+    sudo apt-get install -y jq
+
   echo "DB_HOST=$(echo ${aws_db_instance.csye6225_db.endpoint} | cut -d':' -f1)" > /opt/csye6225/.env
   echo "DB_PORT=${var.db_port}" >> /opt/csye6225/.env
   echo "DB_USERNAME=${aws_db_instance.csye6225_db.username}" >> /opt/csye6225/.env
-  echo "DB_PASSWORD=${var.db_password}" >> /opt/csye6225/.env
   echo "SERVER_PORT=${var.app_port}" >> /opt/csye6225/.env
   echo "DB_DATABASE=${aws_db_instance.csye6225_db.db_name}" >> /opt/csye6225/.env
   echo "AWS_S3_BUCKET_NAME=${aws_s3_bucket.app_bucket.bucket}" >> /opt/csye6225/.env
   echo "AWS_REGION=${var.region}" >> /opt/csye6225/.env
+  DB_PASSWORD=$(aws secretsmanager get-secret-value --secret-id db-password --query 'SecretString' --output text --region ${var.region} | jq -r '.password')
+  echo "DB_PASSWORD=$DB_PASSWORD" >> /opt/csye6225/.env
 
   # Debug output
   echo "Environment variables:" > /tmp/debug_env.log
@@ -45,7 +62,7 @@ resource "aws_launch_template" "app_launch_template" {
   tag_specifications {
     resource_type = "instance"
     tags = {
-      Name = "${var.project_name}-asg-instance"
+      Name = "csye6225-asg-instance"
     }
   }
 }
