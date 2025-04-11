@@ -86,10 +86,10 @@ variable "db_port" {
   default = 5432
 }
 
-variable "db_password" {
-  description = "password of db"
-  type        = string
-}
+# variable "db_password" {
+#   description = "password of db"
+#   type        = string
+# }
 
 variable "min_size_autosacling_group" {
   description = "min isntances for web application"
@@ -154,4 +154,28 @@ variable "low_threshold" {
 variable "domain_name" {
   description = "domain_name"
   type        = string
+}
+
+variable "alias_ebs_key" {
+  description = "Alias for EC2 EBS KMS key"
+  default     = "csye6225-ebs-key"
+}
+
+variable "alias_rds_key" {
+  description = "Alias for RDS KMS key"
+  default     = "csye6225-rds-key"
+}
+
+variable "alias_s3_key" {
+  description = "Alias for S3 KMS key"
+  default     = "csye6225-s3-key"
+}
+
+variable "alias_secret_manager_key" {
+  description = "Alias for Secrets Manager KMS key"
+  default     = "csye6225-secrets-key"
+}
+
+variable "CertificateArn" {
+  description = "SSL CertificateArn"
 }
