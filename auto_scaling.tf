@@ -15,11 +15,11 @@ resource "aws_launch_template" "app_launch_template" {
   }
 
   block_device_mappings {
-    device_name = "/dev/xvda"
+    device_name = "/dev/sda1"
 
     ebs {
       delete_on_termination = true
-      volume_size           = 50
+      volume_size           = 25
       volume_type           = "gp2"
       encrypted             = true
       kms_key_id            = aws_kms_key.ec2_kms_key.arn

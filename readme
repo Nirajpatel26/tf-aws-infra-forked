@@ -1,3 +1,20 @@
 CYSE-6225
 
 Terraform
+## CLI Command for Certificate
+
+```bash
+   aws acm import-certificate \
+     --certificate fileb://certificate.pem \
+     --private-key fileb://privateKey.pem \
+     --certificate-chain fileb://certificateChain.pem \
+     --region us-east-1
+```
+## Continuous Integration
+
+This repository uses GitHub Actions for Continuous Integration. Every time a pull request is created, the following checks will be performed:
+
+- **Terraform Format**: Ensures that all Terraform files are properly formatted.
+- **Terraform Validate**: Validates the Terraform configuration.
+
+A pull request can only be merged if both checks pass. 

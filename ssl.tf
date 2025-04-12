@@ -11,7 +11,7 @@ resource "aws_lb_listener" "demo_https_listener" {
   protocol          = "HTTPS"
 
   ssl_policy      = "ELBSecurityPolicy-2016-08"
-  certificate_arn = var.CertificateArn
+  certificate_arn = var.profile == "dev" ? var.dev_ssl_cert_arn : var.CertificateArn
 
   default_action {
     type             = "forward"
