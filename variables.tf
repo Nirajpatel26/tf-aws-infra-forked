@@ -179,3 +179,8 @@ variable "alias_secret_manager_key" {
 variable "CertificateArn" {
   description = "SSL CertificateArn"
 }
+
+
+variable "dev_ssl_cert_arn" {
+  description = "dev SSL CertificateArn"
+}
